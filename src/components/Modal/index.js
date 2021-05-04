@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { View, Text, TouchableOpacity } from 'react-native';
 
 import styles from './styles';
 
-const ModalComponent = ({ onPress }) => (
+const ModalComponent = ({ onPress, content, acoes }) => (
   <View style={styles.container}>
     <View style={styles.modalView}>
-      <Text style={[styles.text, styles.textHeader]}>Resgate Efetuado</Text>
-      <Text style={[styles.text, styles.textContent]}>
-        O valor solicitado estará em sua conta em até 5 dias úteis{' '}
-      </Text>
+      <Text style={[styles.text, styles.textHeader]}>{content.title}</Text>
+      {acoes &&
+        acoes.map((acao) => (
+          <Text style={[styles.text, styles.textContent]}>
+            foi digitado um valor invalido na ação {acao.nome}, que o maximo
+            disponivel e {acao.valor}
+          </Text>
+        ))}
+      {!acoes.lenght && (
+        <Text style={[styles.text, styles.textContent]}>{content.message}</Text>
+      )}
     </View>
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text>Novo Resgate</Text>
+      <Text>{content.textButton}</Text>
     </TouchableOpacity>
   </View>
 );

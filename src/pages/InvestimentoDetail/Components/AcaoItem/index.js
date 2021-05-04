@@ -1,24 +1,33 @@
-import React from 'react';
-import { View, Text, TextInput } from 'react-native';
-import { TextInputMask } from 'react-native-masked-text';
+import React, { useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
+import CurrencyInput from 'react-native-currency-input';
 import styles from './styles';
 import Item from '../../../../components/Item';
 
-const AcaoItem = ({ acao, onPress, changeText }) => (
-  <View style={styles.container} onPress={onPress}>
-    <Item label="AÇÃO" value={acao.nome} />
-    <Item label="SALDO ACUMULADO" value={acao.valor} />
-    <View style={styles.inputContainer}>
-      <Text>Valor a resgatar</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={(text) => changeText(text, acao)}
-        value={acao.input}
-        keyboardType="numeric"
-      />
+const AcaoItem = ({ acao, onPress, changeText }) => {
+  const [input, setInput] = useState();
+
+  return (
+    <View style={styles.container} onPress={onPress}>
+      <Item label="AÇÃO" value={acao.nome} />
+      <Item label="SALDO ACUMULADO" value={acao.valor} />
+      <View style={styles.inputContainer}>
+        <Text>Valor a resgatar</Text>
+        <CurrencyInput
+          containerStyle={styles.input}
+          value={input}
+          unit="R$"
+          delimiter=","
+          separator="."
+          onChangeValue={setInput}
+          onChangeText={() => {
+            changeText(input, acao);
+          }}
+        />
+      </View>
+      {acao.messageInput && <Text>{acao.messageInput}</Text>}
     </View>
-    {acao.message && <Text>{acao.message}</Text>}
-  </View>
-);
+  );
+};
 
 export default AcaoItem;
